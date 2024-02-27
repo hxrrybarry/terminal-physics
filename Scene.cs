@@ -18,6 +18,8 @@ public class Scene(int xSize, int ySize)
     // special list of physics objects to save processing when doing physics tick
     public List<RigidBody> PhysicsObjects { get; } = [];
 
+    // we add physics objects into a separate list to save processing-
+    //- on calculation
     public void Populate(dynamic v)
     {
         if (v.GetType() == typeof(RigidBody))
@@ -28,10 +30,11 @@ public class Scene(int xSize, int ySize)
 
     public void Update()
     {
+        // forgot why i did this will investigate later
         ScreenSpace = new Voxel?[XSize, YSize];
         foreach (var obj in Voxels)
             ScreenSpace[obj.X, obj.Y] = obj;
-                     
+
         string result = "";
         for (int x = 0; x < XSize; x++)
         {

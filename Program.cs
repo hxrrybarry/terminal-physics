@@ -6,37 +6,29 @@ internal class Program
 {
     public static void Main()
     {
-
-
-        /* for (int i = 0; i < 10; i++)
-        {
-            scene.Populate(new Voxel(i + 10, 90, '#'));
-            scene.Populate(new Voxel(i + 10, 91, '#'));
-            scene.Populate(new Voxel(i + 10, 92, '#'));
-        } */
-
         Scene scene = new(27, 120);
-        RigidBody v = new(scene, 15, 15, 'O', 5f, 0.2f, 1f);
+        RigidBody ball = new(scene, scene.XSize / 2, scene.YSize / 2, 'O', 4f, 0.3f);
 
-        for (int i = 0; i < 50; i++)
-        {
-            scene.Populate(new Voxel(20, i + 43, '#'));
-            scene.Populate(new Voxel(21, i + 43, '#'));
-            scene.Populate(new Voxel(22, i + 43, '#'));
-        }
+        VoxelNoise map = new(scene.XSize, scene.YSize, 130, 3.5f, '#', new Random().Next());
+        map.GenerateGrid();
 
-        scene.Populate(v);
+        foreach (Voxel v in map.PlacedVoxels)
+            scene.Populate(v);
+
+        for (int i = 0; i < scene.YSize; i++)
+            scene.Populate(new Voxel(scene.XSize - 1, i, '#'));
+
+        scene.Populate(ball);
         scene.Update();
 
-        v.AddForce([2, -2]);
-
+        ball.AddForce([new Random().Next(-200, 200) / 100f, new Random().Next(-200, 200) / 100f]);
 
         Console.ReadKey();
         // physics loop
         while (true)
         {
             // Console.ReadKey();
-            Thread.Sleep(50);
+            Thread.Sleep(35);
 
             foreach(RigidBody obj in scene.PhysicsObjects)
                  obj.DoPhysicsTick();
