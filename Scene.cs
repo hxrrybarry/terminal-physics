@@ -20,21 +20,22 @@ public class Scene(int xSize, int ySize)
 
     // we add physics objects into a separate list to save processing-
     //- on calculation
-    public void Populate(dynamic v)
+    public void Populate(dynamic voxel)
     {
-        if (v.GetType() == typeof(RigidBody))
-            PhysicsObjects.Add(v);
+        if (voxel.GetType() == typeof(RigidBody))
+            PhysicsObjects.Add(voxel);
             
-        Voxels.Add(v);
+        Voxels.Add(voxel);
     }
 
     public void Update()
     {
-        // forgot why i did this will investigate later
+        // forgot why I did this will investigate later
         ScreenSpace = new Voxel?[XSize, YSize];
         foreach (var obj in Voxels)
             ScreenSpace[(int)MathF.Round(obj.X), (int)MathF.Round(obj.Y)] = obj;
 
+        // simple render by just looping through the ScreenSpace array
         string result = "";
         for (int x = 0; x < XSize; x++)
         {
