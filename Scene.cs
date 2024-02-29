@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -33,7 +33,7 @@ public class Scene(int xSize, int ySize)
         // forgot why i did this will investigate later
         ScreenSpace = new Voxel?[XSize, YSize];
         foreach (var obj in Voxels)
-            ScreenSpace[obj.X, obj.Y] = obj;
+            ScreenSpace[(int)MathF.Round(obj.X), (int)MathF.Round(obj.Y)] = obj;
 
         string result = "";
         for (int x = 0; x < XSize; x++)
@@ -45,7 +45,7 @@ public class Scene(int xSize, int ySize)
                 else
                     result += ' ';
         }
-        
+
         Console.Clear();
         Console.Write(result);
     }
