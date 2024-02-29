@@ -48,8 +48,7 @@ public class VoxelNoise(int xSize, int ySize, int numberOfPoints, float threshol
         }
 
         // *this is yikes but no other real solution
-        // loop through each point (very slow in 3D!) and perform-
-        // - a distance calculation which is then evaluated at a threshold-
+        // loop through each point and perform a distance calculation which is then evaluated at a threshold-
         // - to determine whether to fill that point with a value
         for (int x = 0; x < XSize; x++)
         {
