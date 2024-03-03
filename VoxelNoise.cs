@@ -59,8 +59,12 @@ public class VoxelNoise(int xSize, int ySize, int numberOfPoints, float threshol
             for (int y = 0; y < YSize; y++)
             {
                 float distance = GetDistanceToNearestPoint(x, y);
-                if (distance > Threshold)
-                    PlacedVoxels.Add(new(x, y, Textures[rnd.Next(Textures.Length)]));
+                if (distance > Threshold + (Threshold * 0.667f))
+                    PlacedVoxels.Add(new(x, y, Textures[2]));
+                else if (distance > Threshold + (Threshold * 0.333f))
+                    PlacedVoxels.Add(new(x, y, Textures[1]));
+                else if (distance > Threshold)
+                    PlacedVoxels.Add(new(x, y, Textures[0]));         
             }
         }
     }

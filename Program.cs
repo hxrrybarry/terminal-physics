@@ -12,17 +12,17 @@ internal class Program
 
     public static void Main()
     {
-        int sleepTime = 15;
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        int sleepTime = 22;
+        char[] textures = ['▒', '▓', '█'];
         while (true)
         {
             Random rnd = new();
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
+            
             Scene scene = new(SCENE_X, SCENE_Y);
 
-            char[] textures = ['▒', '▓', '█'];
-
-            VoxelNoise map = new(scene.XSize, scene.YSize, 165, 3.5f, textures, rnd.Next());
+            VoxelNoise map = new(scene.XSize, scene.YSize, 145, 3.5f, textures, rnd.Next());
             map.GenerateGrid();
 
             foreach (Voxel v in map.PlacedVoxels)
@@ -30,14 +30,14 @@ internal class Program
        
             for (int i = 0; i < scene.YSize; i++)
             {
-                scene.Populate(new Voxel(scene.XSize - 1, i, textures[rnd.Next(textures.Length)]));
-                scene.Populate(new Voxel(0, i, textures[rnd.Next(textures.Length)]));
+                scene.Populate(new Voxel(scene.XSize - 1, i, textures[0]));
+                scene.Populate(new Voxel(0, i, textures[0]));
             }
 
             for (int i = 0; i < scene.XSize; i++)
             {
-                scene.Populate(new Voxel(i, scene.YSize - 1, textures[rnd.Next(textures.Length)]));
-                scene.Populate(new Voxel(i, 0, textures[rnd.Next(textures.Length)]));
+                scene.Populate(new Voxel(i, scene.YSize - 1, textures[0]));
+                scene.Populate(new Voxel(i, 0, textures[0]));
             }
 
             scene.Update();
@@ -47,6 +47,7 @@ internal class Program
                 int xCoord = rnd.Next(0, scene.XSize);
                 int yCoord = rnd.Next(0, scene.YSize);
 
+                // checks to see if proposed RigidBody position is already taken
                 while (scene.ScreenSpace[xCoord, yCoord] is not null)
                 {
                     xCoord = rnd.Next(0, scene.XSize);
@@ -54,7 +55,7 @@ internal class Program
                 }
 
                 RigidBody ball = new(scene, xCoord, yCoord, '●', 15f, 0f, 1f);
-                ball.AddForce(new Vector2(rnd.Next(-1000, 1000) / 100f, rnd.Next(-1000, 1000) / 100f));
+                ball.AddForce(new Vector2(rnd.Next(-500, 500) / 100f, rnd.Next(-500, 500) / 100f));
                 scene.Populate(ball);
             }
 
@@ -77,7 +78,7 @@ internal class Program
                                 sleepTime--;
                             break;
                         case ConsoleKey.LeftArrow:
-                            ++sleepTime;
+                            sleepTime++;
                             break;
                         case ConsoleKey.Enter:
                             running = false;

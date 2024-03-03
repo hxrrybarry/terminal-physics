@@ -10,5 +10,5 @@ public class Voxel(float x, float y, char texture)
 {
     public float X { get; set; } = x;
     public float Y { get; set; } = y;
-    public char Texture { get; } = texture;
+    public char Texture { get; set; } = texture;
 }

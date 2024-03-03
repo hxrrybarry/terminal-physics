@@ -29,11 +29,17 @@ public class RigidBody(Scene scene, float x, float y, char texture, float mass, 
         float newX = Math.Clamp(X + Velocity.X, 0, ActiveScene.XSize - 1);
         float newY = Math.Clamp(Y + Velocity.Y, 0, ActiveScene.YSize - 1);
 
+        int roundedX = (int)MathF.Round(X);
+        int roundedY = (int)MathF.Round(Y);
+        
+        #region Collision Detection
         // evaluates a force
         // checks to see if we update the X position, the object collides
         // if it does, then we apply a force only on the X vector
-        var obstacle = ActiveScene.ScreenSpace[(int)MathF.Round(newX), (int)MathF.Round(Y)];
-        if (obstacle is not null && obstacle != this)
+        var obstacleQuarter = ActiveScene.ScreenSpace[(int)MathF.Round(newX * 0.25f), roundedY];
+        var obstacleFourthQuarter = ActiveScene.ScreenSpace[(int)MathF.Round(newX), roundedY];
+        bool obstacleIsNotSelf = obstacleQuarter != this && obstacleFourthQuarter != this;
+        if ((obstacleFourthQuarter is not null || obstacleFourthQuarter is not null) && obstacleIsNotSelf)
         {
             ResultantForce.Y = 0;
             Acceleration.Y = 0;
@@ -41,14 +47,17 @@ public class RigidBody(Scene scene, float x, float y, char texture, float mass, 
             newX = Math.Clamp(X + Velocity.X, 0, ActiveScene.XSize - 1);
         }
         // same concept
-        obstacle = ActiveScene.ScreenSpace[(int)MathF.Round(X), (int)MathF.Round(newY)];
-        if (obstacle is not null && obstacle != this)
+        obstacleQuarter = ActiveScene.ScreenSpace[roundedX, (int)MathF.Round(newY * 0.25f)];
+        obstacleFourthQuarter = ActiveScene.ScreenSpace[roundedX, (int)MathF.Round(newY)];
+        obstacleIsNotSelf = obstacleQuarter != this && obstacleFourthQuarter != this;
+        if ((obstacleFourthQuarter is not null || obstacleFourthQuarter is not null) && obstacleIsNotSelf)
         {
             ResultantForce.X = 0;
             Acceleration.X = 0;
             Velocity.Y *= -Elasticity;
             newY = Math.Clamp(Y + Velocity.Y, 0, ActiveScene.YSize - 1);
         }
+        #endregion
 
         // eventually, update coordinates
         X = newX;
